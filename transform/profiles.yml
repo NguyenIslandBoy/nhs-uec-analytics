@@ -1,0 +1,11 @@
+nhs_uec:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../warehouse/nhs_uec.duckdb
+      threads: 4
+    ci:
+      type: duckdb
+      path: ../warehouse/nhs_uec_ci.duckdb
+      threads: 2

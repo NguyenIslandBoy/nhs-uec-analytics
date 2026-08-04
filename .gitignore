@@ -1,0 +1,30 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# dbt
+transform/target/
+transform/dbt_packages/
+transform/logs/
+logs/
+
+# Warehouse and raw data (never commit)
+warehouse/*.duckdb
+warehouse/*.duckdb.wal
+data/raw/**
+!data/raw/.gitkeep
+
+# Fixtures ARE committed - see tests/fixtures/
+!tests/fixtures/**
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

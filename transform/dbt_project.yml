@@ -1,0 +1,37 @@
+name: "nhs_uec"
+version: "0.1.0"
+config-version: 2
+profile: "nhs_uec"
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  nhs_uec:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      core:
+        +materialized: table
+        +schema: core
+      reporting:
+        +materialized: table
+        +schema: reporting
+
+snapshots:
+  nhs_uec:
+    +target_schema: snapshots
+
+seeds:
+  nhs_uec:
+    +schema: seeds

@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nhs-uec-analytics"
+version = "0.1.0"
+description = "Analytics engineering warehouse over NHS urgent and emergency care returns"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "duckdb>=1.0",
+    "openpyxl>=3.1",
+    "xlrd>=2.0",
+    "requests>=2.32",
+    "pydantic>=2.7",
+    "python-dateutil>=2.9",
+]
+
+[project.optional-dependencies]
+transform = [
+    "dbt-core>=1.8",
+    "dbt-duckdb>=1.8",
+]
+forecast = [
+    "statsforecast>=1.7",
+    "mlforecast>=0.13",
+    "lightgbm>=4.3",
+    "scikit-learn>=1.5",
+]
+orchestrate = [
+    "prefect>=3.0",
+]
+dev = [
+    "pytest>=8.2",
+    "pytest-cov>=5.0",
+    "ruff>=0.5",
+]
+
+[tool.setuptools]
+packages = ["ingest", "forecast", "orchestration"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
