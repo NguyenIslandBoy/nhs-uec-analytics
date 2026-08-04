@@ -1,0 +1,194 @@
+{
+  "Organisation": {
+    "Name": "TORBAY AND SOUTHERN DEVON HEALTH AND CARE NHS TRUST",
+    "Date": [
+      {
+        "Type": "Operational",
+        "Start": "2012-03-20",
+        "End": "2020-09-30"
+      },
+      {
+        "Type": "Legal",
+        "Start": "2012-04-01",
+        "End": "2015-09-30"
+      }
+    ],
+    "OrgId": {
+      "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+      "assigningAuthorityName": "HSCIC",
+      "extension": "R1G"
+    },
+    "Status": "Inactive",
+    "LastChangeDate": "2021-04-23",
+    "orgRecordClass": "RC1",
+    "GeoLoc": {
+      "Location": {
+        "AddrLn1": "BAY HOUSE, UNIT 2",
+        "AddrLn2": "RIVIERA PARK",
+        "AddrLn3": "NICHOLSON ROAD",
+        "Town": "TORQUAY",
+        "County": "DEVON",
+        "PostCode": "TQ2 7TD",
+        "Country": "ENGLAND"
+      }
+    },
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO197",
+          "uniqueRoleId": 79066,
+          "primaryRole": true,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2012-03-20",
+              "End": "2020-09-30"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2012-04-01",
+              "End": "2015-09-30"
+            }
+          ],
+          "Status": "Inactive"
+        }
+      ]
+    },
+    "Rels": {
+      "Rel": [
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2012-03-20",
+              "End": "2014-08-31"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2012-04-01",
+              "End": "2013-03-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q39"
+            },
+            "PrimaryRoleId": {
+              "id": "RO132",
+              "uniqueRoleId": 107231
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 74253
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2014-09-01",
+              "End": "2015-03-31"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2013-04-01",
+              "End": "2015-03-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q66"
+            },
+            "PrimaryRoleId": {
+              "id": "RO210",
+              "uniqueRoleId": 163561
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 193135
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2015-04-01",
+              "End": "2018-04-17"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2015-04-01",
+              "End": "2015-09-30"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q80"
+            },
+            "PrimaryRoleId": {
+              "id": "RO210",
+              "uniqueRoleId": 202024
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 360816
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2018-04-18",
+              "End": "2020-09-30"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q85"
+            },
+            "PrimaryRoleId": {
+              "id": "RO210",
+              "uniqueRoleId": 299781
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 541731
+        }
+      ]
+    },
+    "Succs": {
+      "Succ": [
+        {
+          "uniqueSuccId": 37320,
+          "Date": [
+            {
+              "Type": "Legal",
+              "Start": "2015-10-01"
+            }
+          ],
+          "Type": "Successor",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "RA9"
+            },
+            "PrimaryRoleId": {
+              "id": "RO197",
+              "uniqueRoleId": 103935
+            }
+          }
+        }
+      ]
+    }
+  }
+}

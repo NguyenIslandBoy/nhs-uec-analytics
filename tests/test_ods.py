@@ -12,10 +12,18 @@ from ingest.ods import OdsClient, OdsFetchError
 
 
 class FakeResponse:
-    def __init__(self, status_code: int, payload: dict | None = None, url: str = "http://x"):
+    def __init__(
+        self,
+        status_code: int,
+        payload: dict | None = None,
+        url: str = "http://x",
+        headers: dict[str, str] | None = None,
+    ):
         self.status_code = status_code
         self._payload = payload or {}
         self.url = url
+        self.headers = headers or {}
+        self.text = ""
 
     def json(self) -> dict:
         return self._payload
@@ -67,14 +75,48 @@ def test_get_raises_after_exhausting_attempts(monkeypatch):
     assert calls["n"] == 3
 
 
-def test_search_stops_when_page_is_short(monkeypatch):
+def test_search_asserts_against_total_count(monkeypatch):
     client, calls = make_client(
         monkeypatch,
-        [FakeResponse(200, {"Organisations": [{"OrgId": "A"}, {"OrgId": "B"}]})],
+        [
+            FakeResponse(
+                200,
+                {"Organisations": [{"OrgId": "A"}, {"OrgId": "B"}]},
+                headers={"X-Total-Count": "2"},
+            )
+        ],
     )
-    results = client.search_organisations(page_size=10)
+    results = client.search_organisations(page_size=1000)
     assert len(results) == 2
-    assert calls["n"] == 1, "a short page means no further requests"
+    assert calls["n"] == 1
+
+
+def test_search_raises_when_pagination_incomplete(monkeypatch):
+    client, _ = make_client(
+        monkeypatch,
+        [
+            FakeResponse(200, {"Organisations": [{"OrgId": "A"}]}, headers={"X-Total-Count": "99"}),
+            FakeResponse(200, {"Organisations": []}, headers={"X-Total-Count": "99"}),
+        ],
+    )
+    with pytest.raises(OdsFetchError, match="pagination incomplete"):
+        client.search_organisations(page_size=1000)
+
+
+def test_search_omits_offset_on_first_page(monkeypatch):
+    """Offset=0 is rejected by the API with HTTP 406, so page one must omit it."""
+    client = OdsClient(min_interval_s=0.0)
+    seen: list[dict] = []
+
+    def fake_get(url, params=None, timeout=None):
+        seen.append(params or {})
+        return FakeResponse(
+            200, {"Organisations": [{"OrgId": "A"}]}, headers={"X-Total-Count": "1"}
+        )
+
+    monkeypatch.setattr(client._session, "get", fake_get)
+    client.search_organisations(primary_role_id="RO197")
+    assert "Offset" not in seen[0]
 
 
 def test_write_raw_json_records_provenance(tmp_path, monkeypatch):
