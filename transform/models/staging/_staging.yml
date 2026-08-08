@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: stg_ods__organisation
+    description: >
+      Typed organisation reference data, one row per ODS code. Validity comes from the
+      Operational date entry: every record has one, and the presence of an End matches
+      Status='Inactive' exactly across the corpus (ADR-0002).
+    columns:
+      - name: ods_code
+        description: Natural key.
+        tests:
+          - unique
+          - not_null
+      - name: org_type
+        description: >
+          Derived from the full role set, not PrimaryRoleId. Foundation Trust is a
+          non-primary role (RO57), so 161 of 544 trusts are invisible to a
+          PrimaryRoleId-based classification (ODS-05).
+        tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - NHS Foundation Trust
+                  - NHS Trust
+                  - Care Trust
+                  - Directly Managed Unit
+                  - Primary Care Trust
+                  - Other
+      - name: valid_from
+        tests: [not_null]
+      - name: valid_to
+        tests: [not_null]
+      - name: is_current
+        tests: [not_null]
+    tests:
+      - dbt_utils.expression_is_true:
+          name: stg_ods__organisation_validity_ordered
+          arguments:
+            expression: "valid_from < valid_to"
+      - dbt_utils.expression_is_true:
+          name: stg_ods__organisation_open_ended_matches_active
+          arguments:
+            expression: "is_current = (status = 'Active')"
+
+  - name: stg_ods__succession
+    description: >
+      Canonical merger edges. ODS records succession from both ends with differing
+      uniqueSuccId values, so edges are normalised to a single (predecessor, successor)
+      direction upstream and deduplicated (ODS-09).
+    columns:
+      - name: predecessor_code
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ods__organisation')
+                field: ods_code
+      - name: successor_code
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ods__organisation')
+                field: ods_code
+      - name: source_direction
+        tests:
+          - accepted_values:
+              arguments:
+                values: [Predecessor, Successor]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          name: stg_ods__succession_one_edge_per_pair
+          arguments:
+            combination_of_columns: [predecessor_code, successor_code]

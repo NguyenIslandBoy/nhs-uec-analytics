@@ -24,6 +24,7 @@ from typing import Any
 import requests
 
 from ingest._io import utc_now_iso, write_raw_json
+from ingest.parse_ods import _succession_targets
 
 LOG = logging.getLogger(__name__)
 
@@ -258,23 +259,6 @@ def _cmd_backfill(args: argparse.Namespace) -> None:
         print(f"\n{len(failures)} failures:")
         for line in failures[:10]:
             print(f"  {line}")
-
-
-def _succession_targets(org: dict) -> set[str]:
-    """Extract every ODS code referenced by an organisation's succession records."""
-    succs = org.get("Succs") or {}
-    entries = succs.get("Succ") if isinstance(succs, dict) else succs
-    if entries is None:
-        return set()
-    if not isinstance(entries, list):
-        entries = [entries]
-
-    codes = set()
-    for entry in entries:
-        extension = (entry.get("Target") or {}).get("OrgId", {}).get("extension")
-        if extension:
-            codes.add(extension.upper())
-    return codes
 
 
 def _cmd_closure(args: argparse.Namespace) -> None:

@@ -69,3 +69,58 @@ Four findings:
 - The ORD API is under review for deprecation; the stated successor is the Organisation Data
   Terminology FHIR R4 API. Ingestion is isolated in `ingest/ods.py` so the parser and warehouse
   are unaffected by a future source migration.
+---
+
+## Addendum: demergers and the many-to-many bridge
+
+**Date:** 2026-08-04
+
+The decision above assumed lineage collapses to a single terminal successor per organisation.
+Profiling the parsed graph showed it does not.
+
+### Finding
+
+23 predecessors have more than one terminal successor. Examples:
+
+| Predecessor | Successors |
+|---|---|
+| RAV (The Guys and Lewisham NHS Trust) | RJ1, RJ2 |
+| RA5 (East Gloucestershire NHS Trust) | RTE, RTQ |
+| REX (Oldham NHS Trust) | RT2, RW6 |
+| REZ (Rochdale Healthcare NHS Trust) | RT2, RW6 |
+
+REX and REZ split across an identical successor pair, so the graph is many-to-many in both
+directions. Chains reach depth 3 (352 at depth 1, 95 at depth 2, 6 at depth 3).
+
+### Consequence for the original options
+
+The plan offered two designs:
+
+- **Option A** - a successor rollup bridge giving continuous series
+- **Option B** - explicit non-comparability flags, leaving series separate
+
+Neither survives contact with a demerger. Option A requires a single reporting entity per
+provider; assigning one would either duplicate historic activity across both successors,
+inflating national totals, or pick one arbitrarily. Option B alone discards the 400-odd
+lineage relationships that are unambiguous.
+
+### Revised decision
+
+`bridge_provider_lineage` is many-to-many with an `is_ambiguous` flag:
+
+- every provider maps to itself at `hops = 0`, so marts join unconditionally rather than
+  coalescing between "has lineage" and "does not"
+- unambiguous lineage (1,072 bridge rows) resolves to a terminal successor
+- ambiguous lineage (49 rows across 23 predecessors) is retained and flagged; marts producing
+  national totals must filter `is_ambiguous = false`
+- `dim_provider.terminal_successor_code` is null where lineage is ambiguous, and
+  `has_ambiguous_lineage` records why, so the two cases are distinguishable without a join
+
+### Consequences
+
+- Correctness is chosen over convenience: an ambiguous rollup is refused rather than guessed.
+  The alternative would silently double-count activity for 23 organisations.
+- Resolution requires a recursive CTE with a depth guard and cycle detection, not a self-join.
+  No cycles were observed; the guard is retained as a regression protection.
+- The bridge grain is `(provider_sk, reporting_entity_code)`, asserted by a dbt test.
+  Bridge row count reconciles exactly: 668 self-edges + 453 lineage edges = 1,121.

@@ -169,3 +169,21 @@ def test_deduplicate_collapses_both_directions_of_one_merger():
 def test_deduplicate_keeps_distinct_mergers_apart():
     edges = parse_succession(load("G6V2S"))
     assert len(deduplicate_edges(edges)) == 3
+
+
+def test_collapse_conflicting_dates_keeps_later():
+    """ODS-12: paired close/open dates collapse to the successor's start date.
+
+    ODS dates the predecessor's final operational day and the successor's first day as
+    separate succession records. The later is the correct attribution boundary.
+    """
+    from ingest.parse_ods import SuccessionEdge, collapse_conflicting_dates
+
+    edges = [
+        SuccessionEdge("R1E", "RRE", "2018-05-31", "R1E", "Successor"),
+        SuccessionEdge("R1E", "RRE", "2018-06-01", "RRE", "Predecessor"),
+    ]
+    collapsed, conflicts = collapse_conflicting_dates(edges)
+    assert conflicts == 1
+    assert len(collapsed) == 1
+    assert collapsed[0].legal_start_date == "2018-06-01"

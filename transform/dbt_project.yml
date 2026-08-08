@@ -35,3 +35,6 @@ snapshots:
 seeds:
   nhs_uec:
     +schema: seeds
+
+vars:
+  staging_dir: staging

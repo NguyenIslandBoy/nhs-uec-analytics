@@ -1,0 +1,47 @@
+{
+  "Organisation": {
+    "Name": "HARINGEY HEALTH CARE NHS TRUST",
+    "Date": [
+      {
+        "Type": "Operational",
+        "Start": "1994-04-01",
+        "End": "2001-03-31"
+      }
+    ],
+    "OrgId": {
+      "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+      "assigningAuthorityName": "HSCIC",
+      "extension": "RP2"
+    },
+    "Status": "Inactive",
+    "LastChangeDate": "2020-03-19",
+    "orgRecordClass": "RC1",
+    "refOnly": true,
+    "GeoLoc": {
+      "Location": {
+        "AddrLn1": "ST ANN'S HOSPITAL",
+        "AddrLn2": "ST ANN'S ROAD",
+        "Town": "LONDON",
+        "PostCode": "N15 3TH",
+        "Country": "ENGLAND"
+      }
+    },
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO197",
+          "uniqueRoleId": 25575,
+          "primaryRole": true,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "1994-04-01",
+              "End": "2001-03-31"
+            }
+          ],
+          "Status": "Inactive"
+        }
+      ]
+    }
+  }
+}

@@ -29,8 +29,11 @@ jobs:
       - name: Tests
         run: pytest
 
+      - name: Build CI fixtures
+        run: python tests/build_ci_fixtures.py
+
       - name: dbt
         working-directory: transform
         run: |
           dbt deps
-          dbt parse
+          dbt build --target ci --vars '{staging_dir: staging-ci}'

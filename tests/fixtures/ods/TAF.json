@@ -1,0 +1,297 @@
+{
+  "Organisation": {
+    "Name": "CAMDEN AND ISLINGTON NHS FOUNDATION TRUST",
+    "Date": [
+      {
+        "Type": "Operational",
+        "Start": "2002-04-01"
+      },
+      {
+        "Type": "Legal",
+        "Start": "2002-04-01",
+        "End": "2024-10-31"
+      }
+    ],
+    "OrgId": {
+      "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+      "assigningAuthorityName": "HSCIC",
+      "extension": "TAF"
+    },
+    "Status": "Active",
+    "LastChangeDate": "2026-04-01",
+    "orgRecordClass": "RC1",
+    "GeoLoc": {
+      "Location": {
+        "AddrLn1": "ST PANCRAS HOSPITAL",
+        "AddrLn2": "4 ST PANCRAS WAY",
+        "Town": "LONDON",
+        "PostCode": "NW1 0PE",
+        "Country": "ENGLAND",
+        "UPRN": 5139737
+      }
+    },
+    "Contacts": {
+      "Contact": [
+        {
+          "type": "tel",
+          "value": "020 3317 3500"
+        },
+        {
+          "type": "http",
+          "value": "HTTPS://WWW.CANDI.NHS.UK/"
+        }
+      ]
+    },
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO107",
+          "uniqueRoleId": 132133,
+          "primaryRole": true,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2002-04-01"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2002-04-01",
+              "End": "2024-10-31"
+            }
+          ],
+          "Status": "Active"
+        },
+        {
+          "id": "RO57",
+          "uniqueRoleId": 141882,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2008-03-01"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2008-03-01",
+              "End": "2024-10-31"
+            }
+          ],
+          "Status": "Active"
+        },
+        {
+          "id": "RO24",
+          "uniqueRoleId": 141883,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2002-04-01"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2002-04-01",
+              "End": "2024-10-31"
+            }
+          ],
+          "Status": "Active"
+        }
+      ]
+    },
+    "Rels": {
+      "Rel": [
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2002-04-01",
+              "End": "2006-06-30"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q05"
+            },
+            "PrimaryRoleId": {
+              "id": "RO132",
+              "uniqueRoleId": 21636
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 44626
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2006-07-01",
+              "End": "2013-03-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q36"
+            },
+            "PrimaryRoleId": {
+              "id": "RO132",
+              "uniqueRoleId": 111691
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 106918
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2013-03-20",
+              "End": "2020-03-31"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2013-04-01",
+              "End": "2020-03-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Q71"
+            },
+            "PrimaryRoleId": {
+              "id": "RO210",
+              "uniqueRoleId": 168379
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 227605
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2020-04-01",
+              "End": "2026-03-31"
+            },
+            {
+              "Type": "Legal",
+              "Start": "2020-04-01",
+              "End": "2024-10-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "QMJ"
+            },
+            "PrimaryRoleId": {
+              "id": "RO261",
+              "uniqueRoleId": 300796
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 688317
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2023-07-01",
+              "End": "2024-10-31"
+            }
+          ],
+          "Status": "Inactive",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "QMJ"
+            },
+            "PrimaryRoleId": {
+              "id": "RO261",
+              "uniqueRoleId": 300796
+            }
+          },
+          "id": "RE8",
+          "uniqueRelId": 834879
+        },
+        {
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "2026-04-01"
+            }
+          ],
+          "Status": "Active",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "Z9B2Z"
+            },
+            "PrimaryRoleId": {
+              "id": "RO261",
+              "uniqueRoleId": 550372
+            }
+          },
+          "id": "RE5",
+          "uniqueRelId": 887137
+        }
+      ]
+    },
+    "Succs": {
+      "Succ": [
+        {
+          "uniqueSuccId": 38132,
+          "Date": [
+            {
+              "Type": "Legal",
+              "Start": "2024-11-01"
+            }
+          ],
+          "Type": "Successor",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "G6V2S"
+            },
+            "PrimaryRoleId": {
+              "id": "RO197",
+              "uniqueRoleId": 527938
+            }
+          }
+        },
+        {
+          "uniqueSuccId": 506,
+          "Date": [
+            {
+              "Type": "Legal",
+              "Start": "2002-04-01"
+            }
+          ],
+          "Type": "Predecessor",
+          "Target": {
+            "OrgId": {
+              "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+              "assigningAuthorityName": "HSCIC",
+              "extension": "RRQ"
+            },
+            "PrimaryRoleId": {
+              "id": "RO197",
+              "uniqueRoleId": 31183
+            }
+          },
+          "forwardSuccession": true
+        }
+      ]
+    }
+  }
+}

@@ -28,3 +28,7 @@ data/raw/**
 Thumbs.db
 .vscode/
 .idea/
+
+# Derived extracts (rebuild with ingest.parse_ods)
+data/staging/
+data/staging-ci/

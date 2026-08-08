@@ -77,3 +77,36 @@ convergence; the corpus is the closure, not the search result.
 ### ODS-11 - ODS codes are not fixed width
 Both legacy three-character codes (RJY, R1G) and newer five-character ANANA codes (G6V2S)
 occur. **Handling:** never infer organisation type or validity from code length or format.
+
+### ODS-12 - Paired succession dates one day apart
+Three predecessor-successor pairs carry two succession records dated on consecutive days
+across a boundary: R1E->RRE (2018-05-31 / 2018-06-01), RJF->RTG (2018-06-30 / 2018-07-01),
+RY1->RW4 (2018-03-31 / 2018-04-01). These are one transaction recorded from both ends - the
+predecessor's final operational day and the successor's first. **Handling:** second
+deduplication pass on ``(predecessor_code, successor_code)`` retaining the **later** date,
+which is the successor's operational start and therefore the correct attribution boundary for
+daily activity. Retaining the earlier date would attribute the predecessor's final day of
+activity to the successor. Conflicts are counted and logged, not silently resolved.
+
+### ODS-13 - Demergers: 26 predecessors have multiple successors
+e.g. `RAV` (The Guys and Lewisham NHS Trust) -> `RJ1`, `RJ2`. Historic activity cannot be
+attributed to a single successor without an arbitrary choice. **Handling:** the lineage bridge
+is many-to-many with an `is_ambiguous` flag; marts exclude ambiguous lineage from rollups by
+default. See ADR-0002 addendum.
+
+### ODS-14 - Succession chains reach depth 3
+Hops to terminal successor: 339 at depth 1, 82 at depth 2, 6 at depth 3. **Handling:** lineage
+resolution is a recursive CTE with a depth guard and cycle detection, not a self-join.
+
+### ODS-15 - Nine primary roles participate in trust succession
+RO197 (484), RO111 Directly Managed Unit (106), RO189 (6), RO179 PCT (4), RO191 (3), RO107 Care
+Trust (2), RO106 (1), RO198 (1), RO114 (1). Confirms ODS-10 quantitatively: 124 of 668 corpus
+organisations exist only because closure pulled them in.
+
+### ODS-16 - Lineage depth differs between single-branch and exhaustive traversal
+`scripts/profile_lineage.py` reports 339 / 82 / 6 at depths 1-3; `int_provider_lineage`
+reports 352 / 95 / 6. The profiler follows one branch per node (`sorted(nxt)[0]`) to keep
+cycle detection simple, whereas the dbt model enumerates every terminal successor. Demerged
+organisations therefore contribute multiple paths in the model and one in the profiler.
+**Handling:** the model is authoritative. The profiler is retained as an exploratory aid and
+the discrepancy is expected, not a defect. Maximum depth agrees at 3 in both.

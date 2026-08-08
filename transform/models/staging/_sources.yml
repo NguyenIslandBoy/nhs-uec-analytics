@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: ods
+    description: >
+      Flattened extracts from the NHS Organisation Data Service ORD API, produced by
+      `python -m ingest.parse_ods`. The corpus is the transitive closure of succession
+      references from the NHS Trust population, not a role-scoped search result -- see
+      ADR-0002 and docs/known-issues.md (ODS-10).
+    tables:
+      - name: organisation
+        description: One row per ODS code. Validity derived from Operational dates.
+        meta:
+          external_location: "../data/{{ var('staging_dir') }}/ods_organisation.parquet"
+        columns:
+          - name: ods_code
+            description: Natural key. Variable width -- legacy 3-char and ANANA 5-char both occur (ODS-11).
+            tests: [unique, not_null]
+          - name: valid_from
+            tests: [not_null]
+
+      - name: succession
+        description: >
+          Canonical merger edges, normalised from the bidirectional records ODS publishes
+          and deduplicated (ODS-09, ODS-12).
+        meta:
+          external_location: "../data/{{ var('staging_dir') }}/ods_succession.parquet"
+        columns:
+          - name: predecessor_code
+            tests: [not_null]
+          - name: successor_code
+            tests: [not_null]

@@ -9,3 +9,4 @@ nhs_uec:
       type: duckdb
       path: ../warehouse/nhs_uec_ci.duckdb
       threads: 2
+  

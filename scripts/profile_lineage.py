@@ -14,8 +14,8 @@ def main() -> None:
     parser.add_argument("--staging", type=Path, default=Path("data/staging"))
     args = parser.parse_args()
 
-    orgs = pd.read_parquet(args.staging / "stg_ods_organisation.parquet")
-    edges = pd.read_parquet(args.staging / "stg_ods_succession.parquet")
+    orgs = pd.read_parquet(args.staging / "ods_organisation.parquet")
+    edges = pd.read_parquet(args.staging / "ods_succession.parquet")
 
     successors: dict[str, list[str]] = defaultdict(list)
     for row in edges.itertuples():

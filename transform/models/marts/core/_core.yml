@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: dim_provider
+    description: >
+      Type 2 provider dimension. Validity derived from ODS Operational dates (ADR-0002).
+      One row per organisation version; grain is (ods_code, valid_from).
+    columns:
+      - name: provider_sk
+        description: Surrogate key on (ods_code, valid_from).
+        tests: [unique, not_null]
+      - name: ods_code
+        tests: [not_null]
+      - name: valid_from
+        tests: [not_null]
+      - name: valid_to
+        tests: [not_null]
+      - name: has_ambiguous_lineage
+        description: >
+          True where the provider has multiple terminal successors (a demerger). Historic
+          activity cannot be attributed to one successor without an arbitrary choice.
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          name: dim_provider_grain
+          arguments:
+            combination_of_columns: [ods_code, valid_from]
+      - no_overlapping_scd_ranges:
+          name: dim_provider_no_overlapping_validity
+          arguments:
+            natural_key: ods_code
+            valid_from: valid_from
+            valid_to: valid_to
+      - at_most_one_current_row:
+          name: dim_provider_at_most_one_current_row_per_code
+          arguments:
+            natural_key: ods_code
+            current_flag: is_current
+      - dbt_utils.expression_is_true:
+          name: dim_provider_ambiguous_has_no_terminal
+          arguments:
+            expression: "not (has_ambiguous_lineage and terminal_successor_code is not null)"
+
+  - name: int_provider_lineage
+    description: Recursive resolution of each organisation to its terminal successor(s).
+    columns:
+      - name: ods_code
+        tests: [not_null]
+      - name: terminal_code
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_ods__organisation')
+                field: ods_code
+      - name: hops
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          name: int_provider_lineage_grain
+          arguments:
+            combination_of_columns: [ods_code, terminal_code]
+      - dbt_utils.expression_is_true:
+          name: int_provider_lineage_no_self_reference
+          arguments:
+            expression: "ods_code != terminal_code"
+      - dbt_utils.expression_is_true:
+          name: int_provider_lineage_depth_within_observed_bound
+          arguments:
+            expression: "hops between 1 and 5"
+
+  - name: bridge_provider_lineage
+    description: >
+      Many-to-many map from provider to reporting entity, including a self-edge at hops=0.
+      Filter is_ambiguous = false for national totals (ODS-13).
+    columns:
+      - name: provider_sk
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_provider')
+                field: provider_sk
+      - name: reporting_entity_sk
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_provider')
+                field: provider_sk
+      - name: hops
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          name: bridge_provider_lineage_grain
+          arguments:
+            combination_of_columns: [provider_sk, reporting_entity_code]

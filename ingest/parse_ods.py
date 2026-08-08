@@ -74,6 +74,16 @@ def unwrap(node: Any, key: str) -> list:
     return as_list(node)
 
 
+def _succession_targets(org: dict) -> set[str]:
+    """Every ODS code referenced by an organisation's succession records."""
+    codes = set()
+    for entry in unwrap(org.get("Succs"), "Succ"):
+        extension = ((entry.get("Target") or {}).get("OrgId") or {}).get("extension")
+        if extension:
+            codes.add(extension.upper())
+    return codes
+
+
 def coerce_bool(value: Any) -> bool:
     """Coerce ODS booleans, which are sometimes the strings "true"/"false" (ODS-02)."""
     if isinstance(value, bool):
@@ -217,6 +227,40 @@ def deduplicate_edges(edges: list[SuccessionEdge]) -> list[SuccessionEdge]:
     return unique
 
 
+def collapse_conflicting_dates(edges: list[SuccessionEdge]) -> tuple[list[SuccessionEdge], int]:
+    """Collapse edges differing only in legal_start_date, keeping the later (ODS-12).
+
+    ODS holds two succession records for some events, dated one day apart across a
+    boundary (e.g. 2018-05-31 / 2018-06-01): the predecessor's final operational day and
+    the successor's first. These are one transaction recorded from both ends, and they
+    survive the primary deduplication because legal_start_date is part of its key.
+
+    The later date is retained, because it is the successor's operational start and
+    therefore the correct attribution boundary for daily activity data. Retaining the
+    earlier date would attribute the predecessor's final day to the successor.
+
+    Returns the collapsed edges and the number of conflicts, so the count is reported
+    rather than silently absorbed.
+    """
+    by_pair: dict[tuple[str, str], list[SuccessionEdge]] = {}
+    for edge in edges:
+        by_pair.setdefault((edge.predecessor_code, edge.successor_code), []).append(edge)
+
+    collapsed: list[SuccessionEdge] = []
+    conflicts = 0
+    for group in by_pair.values():
+        if len(group) > 1:
+            conflicts += 1
+            LOG.warning(
+                "conflicting legal dates for %s -> %s: %s",
+                group[0].predecessor_code,
+                group[0].successor_code,
+                sorted(e.legal_start_date or "" for e in group),
+            )
+        collapsed.append(max(group, key=lambda e: e.legal_start_date or ""))
+    return collapsed, conflicts
+
+
 def load_corpus(corpus_dir: Path) -> list[tuple[Path, dict]]:
     records = []
     for path in sorted(corpus_dir.glob("*.json")):
@@ -234,6 +278,11 @@ def build_tables(corpus_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     organisations = [parse_organisation(payload, path.name) for path, payload in records]
     raw_edges = [edge for _, payload in records for edge in parse_succession(payload)]
     edges = deduplicate_edges(raw_edges)
+    edges, date_conflicts = collapse_conflicting_dates(edges)
+    if date_conflicts:
+        LOG.warning(
+            "%s predecessor-successor pairs had conflicting legal dates (ODS-12)", date_conflicts
+        )
 
     LOG.info(
         "parsed %s organisations, %s raw edges -> %s canonical edges",
@@ -297,8 +346,8 @@ def main() -> None:
     org_df, edge_df = build_tables(args.corpus)
     args.out.mkdir(parents=True, exist_ok=True)
 
-    org_path = args.out / "stg_ods_organisation.parquet"
-    edge_path = args.out / "stg_ods_succession.parquet"
+    org_path = args.out / "ods_organisation.parquet"
+    edge_path = args.out / "ods_succession.parquet"
     org_df.to_parquet(org_path, index=False)
     edge_df.to_parquet(edge_path, index=False)
 

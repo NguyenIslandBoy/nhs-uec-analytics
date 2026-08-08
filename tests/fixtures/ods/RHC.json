@@ -1,0 +1,49 @@
+{
+  "Organisation": {
+    "Name": "ENFIELD COMMUNITY CARE NHS TRUST",
+    "Date": [
+      {
+        "Type": "Operational",
+        "Start": "1993-04-01",
+        "End": "2001-03-31"
+      }
+    ],
+    "OrgId": {
+      "root": "2.16.840.1.113883.2.1.3.2.4.18.48",
+      "assigningAuthorityName": "HSCIC",
+      "extension": "RHC"
+    },
+    "Status": "Inactive",
+    "LastChangeDate": "2020-03-19",
+    "orgRecordClass": "RC1",
+    "refOnly": true,
+    "GeoLoc": {
+      "Location": {
+        "AddrLn1": "AVON VILLA",
+        "AddrLn2": "CHASE FARM HOSPITAL",
+        "AddrLn3": "THE RIDGEWAY",
+        "Town": "ENFIELD",
+        "County": "MIDDLESEX",
+        "PostCode": "EN2 8JL",
+        "Country": "ENGLAND"
+      }
+    },
+    "Roles": {
+      "Role": [
+        {
+          "id": "RO197",
+          "uniqueRoleId": 61870,
+          "primaryRole": true,
+          "Date": [
+            {
+              "Type": "Operational",
+              "Start": "1993-04-01",
+              "End": "2001-03-31"
+            }
+          ],
+          "Status": "Inactive"
+        }
+      ]
+    }
+  }
+}
