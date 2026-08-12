@@ -110,3 +110,108 @@ cycle detection simple, whereas the dbt model enumerates every terminal successo
 organisations therefore contribute multiple paths in the model and one in the profiler.
 **Handling:** the model is authoritative. The profiler is retained as an exploratory aid and
 the discrepancy is expected, not a defect. Maximum depth agrees at 3 in both.
+
+## Situation reports
+
+### SITREP-01 - Weekly extract uploaded under the timeseries filename template
+The Winter 2014-15 page links a weekly file whose href is
+`DailySR-Timeseries-WE-14.12.141.xlsx` while its link text correctly reads
+`Winter SitRep: Acute Web File 8 to 14 December 2014`. All 18 sibling weekly files use
+`DailySR-Web-file-WE-*.xlsx`. **Handling:** the timeseries marker is matched on link text
+only. Link text is editorially maintained; uploaded filenames are ad hoc. A selector keyed on
+the href returns two candidates for this season.
+
+### SITREP-02 - Season timeseries link naming spans six vocabularies
+`Web File Timeseries - UEC Daily SitRep` (2023-24+), `UEC Daily SitRep - Web File
+Timeseries` (2021-22, 2022-23), `UEC Daily SitRep - Acute Time Series` (2020-21),
+`Winter SitRep - Acute Time series` (2017-18 to 2019-20), `Winter SitRep Part A: Acute Time
+Series` (2014-15 to 2016-17), `Daily SR - Timeseries` (2012-13, 2013-14). Note 2012-13
+contains neither "Winter" nor "SitRep". **Handling:** a positive timeseries requirement plus a
+collection-name alternation; a negative "Web File" exclusion cannot be used because three
+modern seasons are named "Web File Timeseries".
+
+### SITREP-03 - Download URLs carry unguessable suffixes
+e.g. `Web-File-Timeseries-UEC-Daily-SitRep-2526-ed389pw.xlsx`. **Handling:** URLs are
+scraped per season, never constructed. The discovery manifest is written to the raw layer so
+fetching is reproducible without re-scraping.
+
+### SITREP-04 - Collection split across two publications
+Urgent and Emergency Care Daily Situation Reports covers 2020-21 onward; the discontinued
+Winter Daily Situation Reports covers 2012-13 to 2019-20. The index claims data back to
+November 2010 but surfaces only 2012-13 onward. **Handling:** both collections are discovered
+through one code path; the 2010-11 and 2011-12 seasons are out of scope pending a source.
+
+### SITREP-05 - One legacy .xls file
+12 of 13 season workbooks are `.xlsx`; 2012-13 is `.xls` (legacy BIFF). **Handling:**
+`pandas.read_excel` dispatches on extension with both `openpyxl` and `xlrd` installed.
+If 2012-13 fails to parse, the engine is the first thing to check.
+
+## Situation reports
+
+### SITREP-01 - Weekly extract uploaded under the timeseries filename template
+The Winter 2014-15 page links a weekly file whose href is
+`DailySR-Timeseries-WE-14.12.141.xlsx` while its link text correctly reads
+`Winter SitRep: Acute Web File 8 to 14 December 2014`. All 18 sibling weekly files use
+`DailySR-Web-file-WE-*.xlsx`. **Handling:** the timeseries marker is matched on link text
+only. Link text is editorially maintained; uploaded filenames are ad hoc. A selector keyed on
+the href returns two candidates for this season.
+
+### SITREP-02 - Season timeseries link naming spans six vocabularies
+`Web File Timeseries - UEC Daily SitRep` (2023-24+), `UEC Daily SitRep - Web File
+Timeseries` (2021-22, 2022-23), `UEC Daily SitRep - Acute Time Series` (2020-21),
+`Winter SitRep - Acute Time series` (2017-18 to 2019-20), `Winter SitRep Part A: Acute Time
+Series` (2014-15 to 2016-17), `Daily SR - Timeseries` (2012-13, 2013-14). Note 2012-13
+contains neither "Winter" nor "SitRep". **Handling:** a positive timeseries requirement plus a
+collection-name alternation; a negative "Web File" exclusion cannot be used because three
+modern seasons are named "Web File Timeseries".
+
+### SITREP-03 - Download URLs carry unguessable suffixes
+e.g. `Web-File-Timeseries-UEC-Daily-SitRep-2526-ed389pw.xlsx`. **Handling:** URLs are
+scraped per season, never constructed. The discovery manifest is written to the raw layer so
+fetching is reproducible without re-scraping.
+
+### SITREP-04 - Collection split across two publications
+Urgent and Emergency Care Daily Situation Reports covers 2020-21 onward; the discontinued
+Winter Daily Situation Reports covers 2012-13 to 2019-20. The index claims data back to
+November 2010 but surfaces only 2012-13 onward. **Handling:** both collections are discovered
+through one code path; the 2010-11 and 2011-12 seasons are out of scope pending a source.
+
+### SITREP-05 - One legacy .xls file
+12 of 13 season workbooks are `.xlsx`; 2012-13 is `.xls` (legacy BIFF). **Handling:**
+`pandas.read_excel` dispatches on extension with both `openpyxl` and `xlrd` installed.
+If 2012-13 fails to parse, the engine is the first thing to check.
+
+## Situation reports
+
+### SITREP-01 - Weekly extract uploaded under the timeseries filename template
+The Winter 2014-15 page links a weekly file whose href is
+`DailySR-Timeseries-WE-14.12.141.xlsx` while its link text correctly reads
+`Winter SitRep: Acute Web File 8 to 14 December 2014`. All 18 sibling weekly files use
+`DailySR-Web-file-WE-*.xlsx`. **Handling:** the timeseries marker is matched on link text
+only. Link text is editorially maintained; uploaded filenames are ad hoc. A selector keyed on
+the href returns two candidates for this season.
+
+### SITREP-02 - Season timeseries link naming spans six vocabularies
+`Web File Timeseries - UEC Daily SitRep` (2023-24+), `UEC Daily SitRep - Web File
+Timeseries` (2021-22, 2022-23), `UEC Daily SitRep - Acute Time Series` (2020-21),
+`Winter SitRep - Acute Time series` (2017-18 to 2019-20), `Winter SitRep Part A: Acute Time
+Series` (2014-15 to 2016-17), `Daily SR - Timeseries` (2012-13, 2013-14). Note 2012-13
+contains neither "Winter" nor "SitRep". **Handling:** a positive timeseries requirement plus a
+collection-name alternation; a negative "Web File" exclusion cannot be used because three
+modern seasons are named "Web File Timeseries".
+
+### SITREP-03 - Download URLs carry unguessable suffixes
+e.g. `Web-File-Timeseries-UEC-Daily-SitRep-2526-ed389pw.xlsx`. **Handling:** URLs are
+scraped per season, never constructed. The discovery manifest is written to the raw layer so
+fetching is reproducible without re-scraping.
+
+### SITREP-04 - Collection split across two publications
+Urgent and Emergency Care Daily Situation Reports covers 2020-21 onward; the discontinued
+Winter Daily Situation Reports covers 2012-13 to 2019-20. The index claims data back to
+November 2010 but surfaces only 2012-13 onward. **Handling:** both collections are discovered
+through one code path; the 2010-11 and 2011-12 seasons are out of scope pending a source.
+
+### SITREP-05 - One legacy .xls file
+12 of 13 season workbooks are `.xlsx`; 2012-13 is `.xls` (legacy BIFF). **Handling:**
+`pandas.read_excel` dispatches on extension with both `openpyxl` and `xlrd` installed.
+If 2012-13 fails to parse, the engine is the first thing to check.

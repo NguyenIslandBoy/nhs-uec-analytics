@@ -16,6 +16,7 @@ dependencies = [
     "requests>=2.32",
     "pydantic>=2.7",
     "python-dateutil>=2.9",
+    "beautifulsoup4>=4.12",
 ]
 
 [project.optional-dependencies]
